@@ -1,0 +1,489 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>Resume Analysis Results</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'analyzer/style.css' %}"
+    >
+
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+
+    <div class="container">
+
+        <a class="navbar-brand fw-bold"
+           href="{% url 'home' %}">
+
+            📄 AI Resume Analyzer
+
+        </a>
+
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav">
+
+            <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+        <div
+            class="collapse navbar-collapse"
+            id="navbarNav">
+
+            <ul class="navbar-nav ms-auto">
+
+                <li class="nav-item">
+
+                    <a class="nav-link"
+                       href="{% url 'dashboard' %}">
+
+                        Dashboard
+
+                    </a>
+
+                </li>
+
+                <li class="nav-item">
+
+                    <a class="nav-link"
+                       href="{% url 'history' %}">
+
+                        History
+
+                    </a>
+
+                </li>
+
+                <li class="nav-item">
+
+                    <a class="nav-link"
+                       href="{% url 'profile' %}">
+
+                        Profile
+
+                    </a>
+
+                </li>
+
+                <li class="nav-item">
+
+                    <a class="nav-link"
+                       href="{% url 'logout' %}">
+
+                        Logout
+
+                    </a>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<!-- ================= MAIN CONTENT ================= -->
+
+<div class="container mt-5 mb-5">
+
+    <!-- TITLE -->
+
+    <div class="text-center mb-4">
+
+        <h1 class="fw-bold">
+
+            🤖 Resume Analysis Results
+
+        </h1>
+
+        <p class="text-muted">
+
+            Automated analysis of your resume
+
+        </p>
+
+    </div>
+
+
+    <!-- RESUME NAME -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-body">
+
+            <h4 class="fw-bold">
+
+                📄 {{ analysis.resume_name }}
+
+            </h4>
+
+            <p class="text-muted mb-0">
+
+                Analyzed on
+                {{ analysis.created_at|date:"d M Y, h:i A" }}
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= SCORE CARDS ================= -->
+
+    <div class="row g-4 mb-4">
+
+        <!-- RESUME SCORE -->
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm text-center h-100">
+
+                <div class="card-body">
+
+                    <div class="fs-1">
+
+                        ⭐
+
+                    </div>
+
+                    <h6 class="text-muted">
+
+                        Resume Score
+
+                    </h6>
+
+                    <h2 class="fw-bold text-primary">
+
+                        {{ analysis.score }}/100
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- CATEGORY -->
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm text-center h-100">
+
+                <div class="card-body">
+
+                    <div class="fs-1">
+
+                        💼
+
+                    </div>
+
+                    <h6 class="text-muted">
+
+                        Resume Category
+
+                    </h6>
+
+                    <h4 class="fw-bold">
+
+                        {{ analysis.category }}
+
+                    </h4>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- JOB MATCH -->
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm text-center h-100">
+
+                <div class="card-body">
+
+                    <div class="fs-1">
+
+                        🎯
+
+                    </div>
+
+                    <h6 class="text-muted">
+
+                        Job Match
+
+                    </h6>
+
+                    <h2 class="fw-bold text-success">
+
+                        {{ analysis.match_percentage }}%
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= DETECTED SKILLS ================= -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-body">
+
+            <h4 class="fw-bold mb-3">
+
+                🧠 Detected Skills
+
+            </h4>
+
+            <div>
+
+                {% for skill in analysis.detected_skills.split %}
+                    
+                    <span class="badge bg-primary me-2 mb-2">
+
+                        {{ skill }}
+
+                    </span>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= JOB MATCH ANALYSIS ================= -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-body">
+
+            <h4 class="fw-bold mb-3">
+
+                🎯 Job Match Analysis
+
+            </h4>
+
+            <h5>
+
+                Job Match Percentage:
+
+                <span class="text-success">
+
+                    {{ analysis.match_percentage }}%
+
+                </span>
+
+            </h5>
+
+
+            <!-- MATCHED -->
+
+            <h5 class="mt-4">
+
+                ✅ Matched Skills
+
+            </h5>
+
+            <div class="mb-3">
+
+                {% for skill in analysis.matched_skills.split %}
+
+                    <span class="badge bg-success me-2 mb-2">
+
+                        {{ skill }}
+
+                    </span>
+
+                {% endfor %}
+
+            </div>
+
+
+            <!-- MISSING -->
+
+            <h5 class="mt-4">
+
+                ❌ Missing Skills
+
+            </h5>
+
+            <div>
+
+                {% for skill in analysis.missing_skills.split %}
+
+                    <span class="badge bg-danger me-2 mb-2">
+
+                        {{ skill }}
+
+                    </span>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= SUGGESTIONS ================= -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-body">
+
+            <h4 class="fw-bold mb-3">
+
+                🤖 AI Resume Improvement Suggestions
+
+            </h4>
+
+            <p class="text-muted">
+
+                Based on your resume analysis, here are some areas you can improve.
+
+            </p>
+
+
+            {% for suggestion in suggestions %}
+
+                <div class="alert alert-light border">
+
+                    💡 {{ suggestion }}
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= EXTRACTED TEXT ================= -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-body">
+
+            <h4 class="fw-bold mb-3">
+
+                📃 Extracted Resume Text
+
+            </h4>
+
+            <div
+                class="bg-light p-3 rounded"
+                style="white-space: pre-wrap;">
+
+                {{ analysis.resume_text }}
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= ACTION BUTTONS ================= -->
+
+    <div class="text-center mt-4 mb-5">
+
+        <a
+            href="{% url 'home' %}"
+            class="btn btn-primary me-2 mb-2">
+
+            📤 Analyze Another Resume
+
+        </a>
+
+
+        <a
+            href="{% url 'history' %}"
+            class="btn btn-outline-primary me-2 mb-2">
+
+            📚 View History
+
+        </a>
+
+
+        <a
+            href="{% url 'dashboard' %}"
+            class="btn btn-outline-secondary me-2 mb-2">
+
+            📊 Dashboard
+
+        </a>
+
+
+        <!-- PDF DOWNLOAD BUTTON -->
+
+        <a
+            href="{% url 'download_report' analysis.id %}"
+            class="btn btn-success mb-2">
+
+            📥 Download PDF Report
+
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer class="bg-primary text-white text-center py-3">
+
+    © 2026 AI Resume Analyzer
+
+</footer>
+
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+</body>
+
+</html>

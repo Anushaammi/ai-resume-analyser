@@ -1,0 +1,174 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AI Resume Analyzer - Profile</title>
+
+    <link rel="stylesheet"
+          href="{% static 'analyzer/style.css' %}">
+
+</head>
+
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+    <header>
+
+        <h1>👤 My Profile</h1>
+
+        <p>
+            AI Resume Analyzer
+        </p>
+
+    </header>
+
+
+    <!-- ================= PROFILE CONTAINER ================= -->
+
+    <div class="container">
+
+        <!-- USER INFORMATION -->
+
+        <div class="card">
+
+            <h2>👤 User Information</h2>
+
+            <p>
+                <strong>Username:</strong>
+                {{ user.username }}
+            </p>
+
+            <p>
+                <strong>Email:</strong>
+
+                {% if user.email %}
+
+                    {{ user.email }}
+
+                {% else %}
+
+                    Not provided
+
+                {% endif %}
+
+            </p>
+
+        </div>
+
+
+        <!-- PROFILE STATISTICS -->
+
+        <div class="card">
+
+            <h2>📊 Resume Statistics</h2>
+
+            <div class="stats">
+
+
+                <!-- TOTAL RESUMES -->
+
+                <div class="stat-card">
+
+                    <h3>
+                        📄
+                    </h3>
+
+                    <h2>
+                        {{ total_resumes }}
+                    </h2>
+
+                    <p>
+                        Total Resumes
+                    </p>
+
+                </div>
+
+
+                <!-- AVERAGE SCORE -->
+
+                <div class="stat-card">
+
+                    <h3>
+                        ⭐
+                    </h3>
+
+                    <h2>
+                        {{ average_score }}/100
+                    </h2>
+
+                    <p>
+                        Average Resume Score
+                    </p>
+
+                </div>
+
+
+                <!-- JOB MATCH -->
+
+                <div class="stat-card">
+
+                    <h3>
+                        🎯
+                    </h3>
+
+                    <h2>
+                        {{ average_match }}%
+                    </h2>
+
+                    <p>
+                        Average Job Match
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= NAVIGATION ================= -->
+
+        <div class="card">
+
+            <h2>🔗 Quick Links</h2>
+
+            <div class="buttons">
+
+                <a href="{% url 'home' %}">
+                    🏠 Analyze Resume
+                </a>
+
+                <a href="{% url 'dashboard' %}">
+                    📊 Dashboard
+                </a>
+
+                <a href="{% url 'history' %}">
+                    📄 Resume History
+                </a>
+
+                <a href="{% url 'logout' %}">
+                    🚪 Logout
+                </a>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+</body>
+
+</html>

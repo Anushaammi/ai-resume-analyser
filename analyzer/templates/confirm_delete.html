@@ -1,0 +1,287 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Confirm Delete - AI Resume Analyzer</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        body {
+
+            font-family: Arial, sans-serif;
+
+            background: linear-gradient(
+                135deg,
+                #f5e6ff,
+                #ffe6f2
+            );
+
+            min-height: 100vh;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            color: #333;
+        }
+
+
+        .container {
+
+            width: 90%;
+
+            max-width: 550px;
+
+            background: white;
+
+            padding: 40px;
+
+            border-radius: 20px;
+
+            box-shadow:
+                0 10px 30px
+                rgba(0, 0, 0, 0.15);
+
+            text-align: center;
+        }
+
+
+        .icon {
+
+            font-size: 60px;
+
+            margin-bottom: 15px;
+        }
+
+
+        h1 {
+
+            color: #6a1b9a;
+
+            margin-bottom: 15px;
+
+            font-size: 28px;
+        }
+
+
+        .warning {
+
+            color: #d32f2f;
+
+            font-weight: bold;
+
+            margin-bottom: 20px;
+        }
+
+
+        .resume-name {
+
+            background: #f5e6ff;
+
+            padding: 15px;
+
+            border-radius: 10px;
+
+            margin: 20px 0;
+
+            font-weight: bold;
+
+            color: #6a1b9a;
+
+            word-break: break-word;
+        }
+
+
+        .message {
+
+            color: #666;
+
+            line-height: 1.6;
+
+            margin-bottom: 30px;
+        }
+
+
+        .buttons {
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 15px;
+
+            flex-wrap: wrap;
+        }
+
+
+        .btn {
+
+            border: none;
+
+            padding: 12px 25px;
+
+            border-radius: 8px;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            text-decoration: none;
+
+            display: inline-block;
+        }
+
+
+        .delete-btn {
+
+            background: #d32f2f;
+
+            color: white;
+        }
+
+
+        .delete-btn:hover {
+
+            background: #b71c1c;
+        }
+
+
+        .cancel-btn {
+
+            background: #6a1b9a;
+
+            color: white;
+        }
+
+
+        .cancel-btn:hover {
+
+            background: #4a116d;
+        }
+
+
+        @media (max-width: 600px) {
+
+            .container {
+
+                padding: 25px;
+            }
+
+            .buttons {
+
+                flex-direction: column;
+            }
+
+            .btn {
+
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="container">
+
+
+        <div class="icon">
+            ⚠️
+        </div>
+
+
+        <h1>
+            Confirm Delete
+        </h1>
+
+
+        <p class="warning">
+            Are you sure you want to delete this resume analysis?
+        </p>
+
+
+        <div class="resume-name">
+
+            📄 {{ analysis.resume_name }}
+
+        </div>
+
+
+        <p class="message">
+
+            This will permanently delete this analysis
+            from your resume history.
+
+            <br>
+
+            This action cannot be undone.
+
+        </p>
+
+
+        <div class="buttons">
+
+
+            <!-- DELETE FORM -->
+
+            <form
+                method="POST"
+                action="{% url 'delete_history' analysis.id %}"
+            >
+
+                {% csrf_token %}
+
+                <button
+                    type="submit"
+                    class="btn delete-btn"
+                >
+                    🗑️ Yes, Delete
+                </button>
+
+            </form>
+
+
+            <!-- CANCEL -->
+
+            <a
+                href="{% url 'history' %}"
+                class="btn cancel-btn"
+            >
+                ← Cancel
+            </a>
+
+
+        </div>
+
+
+    </div>
+
+
+</body>
+
+</html>
+```

@@ -1,0 +1,97 @@
+```html
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Register - AI Resume Analyzer</title>
+
+</head>
+
+
+<body>
+
+    <h1>AI Resume Analyzer</h1>
+
+    <h2>Create Account</h2>
+
+
+    {% if error %}
+
+        <p>{{ error }}</p>
+
+    {% endif %}
+
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+
+        <p>
+
+            <label>Username:</label>
+
+            <br>
+
+            <input
+                type="text"
+                name="username"
+                required
+            >
+
+        </p>
+
+
+        <p>
+
+            <label>Password:</label>
+
+            <br>
+
+            <input
+                type="password"
+                name="password"
+                required
+            >
+
+        </p>
+
+
+        <p>
+
+            <label>Confirm Password:</label>
+
+            <br>
+
+            <input
+                type="password"
+                name="confirm_password"
+                required
+            >
+
+        </p>
+
+
+        <button type="submit">
+            Register
+        </button>
+
+    </form>
+
+
+    <p>
+
+        Already have an account?
+
+        <a href="{% url 'login' %}">
+            Login
+        </a>
+
+    </p>
+
+
+</body>
+
+</html>
+```

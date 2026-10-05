@@ -1,0 +1,869 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard - AI Resume Analyzer</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <link
+        rel="stylesheet"
+        href="{% static 'analyzer/style.css' %}">
+
+</head>
+
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar navbar-expand-lg navbar-dark">
+
+    <div class="container">
+
+        <a class="navbar-brand fw-bold"
+           href="{% url 'home' %}">
+            📄 AI Resume Analyzer
+        </a>
+
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarMenu">
+
+            <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+
+        <div
+            class="collapse navbar-collapse"
+            id="navbarMenu">
+
+            <ul class="navbar-nav ms-auto">
+
+                <li class="nav-item">
+                    <a class="nav-link"
+                       href="{% url 'home' %}">
+                        Analyze Resume
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link active"
+                       href="{% url 'dashboard' %}">
+                        Dashboard
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link"
+                       href="{% url 'history' %}">
+                        History
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link"
+                       href="{% url 'profile' %}">
+                        Profile
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link"
+                       href="{% url 'logout' %}">
+                        Logout
+                    </a>
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<!-- ================= MAIN ================= -->
+
+<div class="container py-5">
+
+
+    <!-- WELCOME -->
+
+    <div class="text-center mb-5">
+
+        <h1 class="fw-bold">
+            📊 Dashboard
+        </h1>
+
+        <p class="text-muted">
+            Welcome, <strong>{{ request.user.username }}</strong> ❤️
+        </p>
+
+        <p class="text-muted">
+            Track your resume performance and job matching results.
+        </p>
+
+    </div>
+
+
+    <!-- ================= STAT CARDS ================= -->
+
+    <div class="row g-4 mb-5">
+
+
+        <div class="col-md-4">
+
+            <div class="card stat-card text-center h-100">
+
+                <div class="card-body">
+
+                    <div class="fs-1">
+                        📄
+                    </div>
+
+                    <h6 class="text-muted">
+                        Total Resumes
+                    </h6>
+
+                    <h3 class="fw-bold">
+                        {{ total_resumes }}
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        Resumes analyzed
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            <div class="card stat-card text-center h-100">
+
+                <div class="card-body">
+
+                    <div class="fs-1">
+                        ⭐
+                    </div>
+
+                    <h6 class="text-muted">
+                        Average Resume Score
+                    </h6>
+
+                    <h3 class="fw-bold">
+                        {{ average_score }}/100
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        Overall resume quality
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            <div class="card stat-card text-center h-100">
+
+                <div class="card-body">
+
+                    <div class="fs-1">
+                        🎯
+                    </div>
+
+                    <h6 class="text-muted">
+                        Average Job Match
+                    </h6>
+
+                    <h3 class="fw-bold">
+                        {{ average_match }}%
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        Average job compatibility
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= PERFORMANCE ================= -->
+
+    <div class="card resume-card mb-5">
+
+        <div class="card-body">
+
+            <h3 class="fw-bold mb-2">
+                📈 Performance Overview
+            </h3>
+
+            <p class="text-muted mb-4">
+                See your overall resume performance at a glance.
+            </p>
+
+
+            <div class="mb-4">
+
+                <div class="d-flex justify-content-between mb-2">
+
+                    <strong>
+                        ⭐ Average Resume Score
+                    </strong>
+
+                    <strong>
+                        {{ average_score }}/100
+                    </strong>
+
+                </div>
+
+
+                <div class="progress">
+
+                    <div
+                        class="progress-bar"
+                        role="progressbar"
+                        style="width: {{ average_score }}%;">
+
+                        {{ average_score }}%
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div>
+
+                <div class="d-flex justify-content-between mb-2">
+
+                    <strong>
+                        🎯 Average Job Match
+                    </strong>
+
+                    <strong>
+                        {{ average_match }}%
+                    </strong>
+
+                </div>
+
+
+                <div class="progress">
+
+                    <div
+                        class="progress-bar"
+                        role="progressbar"
+                        style="width: {{ average_match }}%;">
+
+                        {{ average_match }}%
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= BAR CHART ================= -->
+
+    <div class="card resume-card mb-5">
+
+        <div class="card-body">
+
+            <h3 class="fw-bold mb-2">
+                📊 Resume Performance Chart
+            </h3>
+
+            <p class="text-muted">
+                Compare your resume score and job match percentage.
+            </p>
+
+
+            <div
+                style="
+                    position: relative;
+                    height: 400px;
+                    width: 100%;
+                ">
+
+                <canvas
+                    id="resumePerformanceChart">
+                </canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= SKILL MATCH CHART ================= -->
+
+    <div class="card resume-card mb-5">
+
+        <div class="card-body">
+
+            <h3 class="fw-bold mb-2">
+                🍩 Skill Match Analysis
+            </h3>
+
+            <p class="text-muted">
+                Compare matched skills and missing skills.
+            </p>
+
+
+            <div
+                style="
+                    position: relative;
+                    height: 350px;
+                    max-width: 500px;
+                    margin: auto;
+                ">
+
+                <canvas
+                    id="skillMatchChart">
+                </canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= SKILL ANALYSIS ================= -->
+
+    <div class="card resume-card mb-5">
+
+        <div class="card-body">
+
+            <h3 class="fw-bold mb-4">
+                🧠 Skill Analysis
+            </h3>
+
+
+            <div class="row g-4">
+
+
+                <div class="col-md-6">
+
+                    <div class="p-4 bg-light rounded">
+
+                        <h5 class="fw-bold">
+                            ✅ Matched Skills
+                        </h5>
+
+                        {% if recent_analyses %}
+
+                            {% for analysis in recent_analyses %}
+
+                                {% if analysis.matched_skills %}
+
+                                    <p>
+                                        {{ analysis.matched_skills }}
+                                    </p>
+
+                                {% endif %}
+
+                            {% endfor %}
+
+                        {% else %}
+
+                            <p class="text-muted">
+                                No matched skills available.
+                            </p>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <div class="p-4 bg-light rounded">
+
+                        <h5 class="fw-bold">
+                            ❌ Missing Skills
+                        </h5>
+
+                        {% if recent_analyses %}
+
+                            {% for analysis in recent_analyses %}
+
+                                {% if analysis.missing_skills %}
+
+                                    <p>
+                                        {{ analysis.missing_skills }}
+                                    </p>
+
+                                {% endif %}
+
+                            {% endfor %}
+
+                        {% else %}
+
+                            <p class="text-muted">
+                                No missing skills available.
+                            </p>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= RECENT ANALYSES ================= -->
+
+    <div class="card resume-card mb-5">
+
+        <div class="card-body">
+
+            <h3 class="fw-bold mb-4">
+                📋 Recent Analyses
+            </h3>
+
+            <p class="text-muted">
+                Your latest resume analysis results
+            </p>
+
+
+            {% if recent_analyses %}
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Resume
+                                </th>
+
+                                <th>
+                                    Date
+                                </th>
+
+                                <th>
+                                    Score
+                                </th>
+
+                                <th>
+                                    Job Match
+                                </th>
+
+                                <th>
+                                    Category
+                                </th>
+
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            {% for analysis in recent_analyses %}
+
+                                <tr>
+
+                                    <td>
+                                        📄 {{ analysis.resume_name }}
+                                    </td>
+
+                                    <td>
+                                        {{ analysis.created_at|date:"d M Y, h:i A" }}
+                                    </td>
+
+                                    <td>
+                                        ⭐ {{ analysis.score }}/100
+                                    </td>
+
+                                    <td>
+                                        🎯 {{ analysis.match_percentage }}%
+                                    </td>
+
+                                    <td>
+                                        {{ analysis.category }}
+                                    </td>
+
+                                    <td>
+
+                                        <a
+                                            href="{% url 'resume_details' analysis.id %}"
+                                            class="btn btn-sm btn-primary">
+
+                                            View Details
+
+                                        </a>
+
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            {% else %}
+
+                <p class="text-muted">
+                    No resume analyses yet.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= QUICK ACTIONS ================= -->
+
+    <div class="card resume-card mb-5">
+
+        <div class="card-body">
+
+            <h3 class="fw-bold mb-3">
+                ⚡ Quick Actions
+            </h3>
+
+            <p class="text-muted">
+                Quickly access the main features.
+            </p>
+
+
+            <div class="quick-actions">
+
+                <a
+                    href="{% url 'home' %}"
+                    class="btn btn-primary">
+
+                    📤 Analyze New Resume
+
+                </a>
+
+
+                <a
+                    href="{% url 'history' %}"
+                    class="btn btn-outline-primary">
+
+                    📚 Resume History
+
+                </a>
+
+
+                <a
+                    href="{% url 'profile' %}"
+                    class="btn btn-outline-secondary">
+
+                    👤 My Profile
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer class="text-center py-4">
+
+    <p class="mb-0">
+        © 2026 AI Resume Analyzer
+    </p>
+
+</footer>
+
+
+<!-- ================= CHART.JS ================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<!-- ================= DJANGO DATA ================= -->
+
+{{ chart_labels|json_script:"chartLabels" }}
+
+{{ chart_scores|json_script:"chartScores" }}
+
+{{ chart_matches|json_script:"chartMatches" }}
+
+{{ matched_count|json_script:"matchedCount" }}
+
+{{ missing_count|json_script:"missingCount" }}
+
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+
+        /* ================= BAR CHART ================= */
+
+        const chartLabels = JSON.parse(
+            document.getElementById(
+                "chartLabels"
+            ).textContent
+        );
+
+
+        const chartScores = JSON.parse(
+            document.getElementById(
+                "chartScores"
+            ).textContent
+        );
+
+
+        const chartMatches = JSON.parse(
+            document.getElementById(
+                "chartMatches"
+            ).textContent
+        );
+
+
+        const performanceCanvas =
+            document.getElementById(
+                "resumePerformanceChart"
+            );
+
+
+        if (performanceCanvas) {
+
+            new Chart(
+                performanceCanvas,
+                {
+
+                    type: "bar",
+
+                    data: {
+
+                        labels: chartLabels,
+
+                        datasets: [
+
+                            {
+
+                                label: "Resume Score",
+
+                                data: chartScores,
+
+                                borderWidth: 1
+
+                            },
+
+                            {
+
+                                label: "Job Match %",
+
+                                data: chartMatches,
+
+                                borderWidth: 1
+
+                            }
+
+                        ]
+
+                    },
+
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+                        scales: {
+
+                            y: {
+
+                                beginAtZero: true,
+
+                                max: 100,
+
+                                title: {
+
+                                    display: true,
+
+                                    text: "Percentage"
+
+                                }
+
+                            },
+
+                            x: {
+
+                                title: {
+
+                                    display: true,
+
+                                    text: "Resume"
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* ================= DOUGHNUT CHART ================= */
+
+        const matchedCount = JSON.parse(
+            document.getElementById(
+                "matchedCount"
+            ).textContent
+        );
+
+
+        const missingCount = JSON.parse(
+            document.getElementById(
+                "missingCount"
+            ).textContent
+        );
+
+
+        const skillCanvas =
+            document.getElementById(
+                "skillMatchChart"
+            );
+
+
+        if (skillCanvas) {
+
+            new Chart(
+                skillCanvas,
+                {
+
+                    type: "doughnut",
+
+                    data: {
+
+                        labels: [
+                            "Matched Skills",
+                            "Missing Skills"
+                        ],
+
+                        datasets: [
+
+                            {
+
+                                data: [
+                                    matchedCount,
+                                    missingCount
+                                ],
+
+                                borderWidth: 1
+
+                            }
+
+                        ]
+
+                    },
+
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+                        plugins: {
+
+                            legend: {
+
+                                position: "bottom"
+
+                            }
+
+                        }
+
+                    }
+
+                }
+            );
+
+        }
+
+    }
+);
+
+</script>
+
+
+<!-- ================= BOOTSTRAP JS ================= -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+
+</body>
+
+</html>

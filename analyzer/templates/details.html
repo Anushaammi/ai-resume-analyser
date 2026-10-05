@@ -1,0 +1,174 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+```
+<title>Resume Analysis Details</title>
+
+<link rel="stylesheet"
+      href="{% static 'analyzer/style.css' %}">
+
+<style>
+
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    .details-container {
+        width: 85%;
+        margin: 40px auto;
+    }
+
+    .details-card {
+        background: white;
+        padding: 25px;
+        margin-bottom: 25px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .details-card h2 {
+        margin-bottom: 15px;
+    }
+
+    .skills {
+        padding: 10px;
+        background: #f5f5f5;
+        border-radius: 8px;
+        margin-bottom: 10px;
+    }
+
+    .back-button {
+        display: inline-block;
+        padding: 10px 18px;
+        background: #6f42c1;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    .back-button:hover {
+        opacity: 0.85;
+    }
+
+</style>
+```
+
+</head>
+
+<body>
+
+<div class="details-container">
+
+```
+<a href="{% url 'history' %}" class="back-button">
+    ← Back to History
+</a>
+
+<div class="details-card">
+
+    <h1>📄 Resume Analysis Details</h1>
+
+    <p>
+        <strong>Resume Name:</strong>
+        {{ analysis.resume_name }}
+    </p>
+
+    <p>
+        <strong>Analyzed On:</strong>
+        {{ analysis.created_at|date:"F d, Y, h:i A" }}
+    </p>
+
+</div>
+
+
+<div class="details-card">
+
+    <h2>📊 Resume Score</h2>
+
+    <h1>{{ analysis.score }}/100</h1>
+
+</div>
+
+
+<div class="details-card">
+
+    <h2>💼 Resume Category</h2>
+
+    <h3>{{ analysis.category }}</h3>
+
+</div>
+
+
+<div class="details-card">
+
+    <h2>🛠️ Detected Skills</h2>
+
+    <div class="skills">
+        {{ analysis.detected_skills }}
+    </div>
+
+</div>
+
+
+<div class="details-card">
+
+    <h2>📋 Job Description Skills</h2>
+
+    <div class="skills">
+        {{ analysis.job_skills }}
+    </div>
+
+</div>
+
+
+<div class="details-card">
+
+    <h2>✅ Matched Skills</h2>
+
+    <div class="skills">
+        {{ analysis.matched_skills }}
+    </div>
+
+</div>
+
+
+<div class="details-card">
+
+    <h2>❌ Missing Skills</h2>
+
+    <div class="skills">
+        {{ analysis.missing_skills }}
+    </div>
+
+</div>
+
+
+<div class="details-card">
+
+    <h2>🎯 Job Match Percentage</h2>
+
+    <h1>{{ analysis.match_percentage }}%</h1>
+
+</div>
+
+
+<div class="details-card">
+
+    <h2>📜 Extracted Resume Text</h2>
+
+    <div class="skills">
+        {{ analysis.resume_text|linebreaks }}
+    </div>
+
+</div>
+```
+
+</div>
+
+</body>
+</html>

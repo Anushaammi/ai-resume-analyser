@@ -1,0 +1,396 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+```
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Resume History - AI Resume Analyzer</title>
+
+<style>
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #f7e8ff, #ffeef8);
+        color: #333;
+    }
+
+    .navbar {
+        background: #8e44ad;
+        color: white;
+        padding: 18px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .navbar h2 {
+        margin: 0;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 18px;
+        flex-wrap: wrap;
+    }
+
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .nav-links a:hover {
+        text-decoration: underline;
+    }
+
+    .container {
+        width: 90%;
+        max-width: 1100px;
+        margin: 40px auto;
+    }
+
+    .welcome {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .welcome h1 {
+        color: #6c3483;
+    }
+
+    .search-box {
+        background: white;
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        margin-bottom: 30px;
+    }
+
+    .search-box h2 {
+        color: #6c3483;
+    }
+
+    .search-form {
+        display: flex;
+        gap: 10px;
+    }
+
+    .search-form input {
+        flex: 1;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 15px;
+    }
+
+    .search-form button {
+        padding: 12px 22px;
+        border: none;
+        border-radius: 8px;
+        background: #8e44ad;
+        color: white;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .search-form button:hover {
+        background: #6c3483;
+    }
+
+    .resume-card {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    .resume-card h2 {
+        color: #6c3483;
+        margin-top: 0;
+    }
+
+    .resume-info {
+        line-height: 1.8;
+    }
+
+    .score {
+        font-weight: bold;
+    }
+
+    .buttons {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 20px;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 10px 16px;
+        border-radius: 8px;
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+    }
+
+    .details-btn {
+        background: #3498db;
+    }
+
+    .details-btn:hover {
+        background: #2874a6;
+    }
+
+    .pdf-btn {
+        background: #27ae60;
+    }
+
+    .pdf-btn:hover {
+        background: #1e8449;
+    }
+
+    .delete-btn {
+        background: #e74c3c;
+    }
+
+    .delete-btn:hover {
+        background: #c0392b;
+    }
+
+    .empty {
+        background: white;
+        padding: 30px;
+        text-align: center;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    footer {
+        text-align: center;
+        padding: 25px;
+        margin-top: 50px;
+        background: #8e44ad;
+        color: white;
+    }
+
+    @media (max-width: 700px) {
+
+        .navbar {
+            padding: 18px 20px;
+        }
+
+        .container {
+            width: 94%;
+        }
+
+        .search-form {
+            flex-direction: column;
+        }
+
+    }
+
+</style>
+```
+
+</head>
+
+<body>
+
+```
+<!-- NAVBAR -->
+
+<div class="navbar">
+
+    <h2>📄 AI Resume Analyzer</h2>
+
+    <div class="nav-links">
+
+        <a href="{% url 'home' %}">
+            🏠 Analyze Resume
+        </a>
+
+        <a href="{% url 'dashboard' %}">
+            📊 Dashboard
+        </a>
+
+        <a href="{% url 'profile' %}">
+            👤 My Profile
+        </a>
+
+        <a href="{% url 'logout' %}">
+            🚪 Logout
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- MAIN CONTENT -->
+
+<div class="container">
+
+    <div class="welcome">
+
+        <h1>📄 Resume Management</h1>
+
+        <p>
+            Welcome, <strong>{{ request.user.username }}</strong>
+        </p>
+
+    </div>
+
+
+    <!-- SEARCH -->
+
+    <div class="search-box">
+
+        <h2>🔎 Search Resumes</h2>
+
+        <form method="GET" class="search-form">
+
+            <input
+                type="text"
+                name="search"
+                placeholder="Search resume name..."
+                value="{{ search_query }}"
+            >
+
+            <button type="submit">
+                🔍 Search
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- RESUME LIST -->
+
+    <h2>📋 My Resumes</h2>
+
+
+    {% if analyses %}
+
+        {% for analysis in analyses %}
+
+            <div class="resume-card">
+
+                <h2>
+                    📄 {{ analysis.resume_name }}
+                </h2>
+
+                <div class="resume-info">
+
+                    <p>
+                        <strong>Category:</strong>
+                        {{ analysis.category }}
+                    </p>
+
+                    <p>
+                        <strong>Resume Score:</strong>
+                        {{ analysis.score }}/100
+                    </p>
+
+                    <p>
+                        <strong>Job Match:</strong>
+                        {{ analysis.match_percentage }}%
+                    </p>
+
+                    <p>
+                        <strong>Analyzed On:</strong>
+                        {{ analysis.created_at|date:"M. d, Y, g:i a" }}
+                    </p>
+
+                </div>
+
+
+                <!-- BUTTONS -->
+
+                <div class="buttons">
+
+                    <!-- VIEW DETAILS -->
+
+                    <a
+                        href="{% url 'resume_details' analysis.id %}"
+                        class="btn details-btn"
+                    >
+                        👁️ View Details
+                    </a>
+
+
+                    <!-- DOWNLOAD PDF -->
+
+                    <a
+                        href="{% url 'download_report' analysis.id %}"
+                        class="btn pdf-btn"
+                    >
+                        📄 Download PDF
+                    </a>
+
+
+                    <!-- DELETE -->
+
+                    <a
+                        href="{% url 'delete_history' analysis.id %}"
+                        class="btn delete-btn"
+                    >
+                        🗑️ Delete
+                    </a>
+
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty">
+
+            <h2>📭 No Resumes Found</h2>
+
+            <p>
+                You have not analyzed any resumes yet.
+            </p>
+
+            <a
+                href="{% url 'home' %}"
+                class="btn details-btn"
+            >
+                📤 Analyze Resume
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+
+<!-- FOOTER -->
+
+<footer>
+
+    © 2026 AI Resume Analyzer
+
+</footer>
+```
+
+</body>
+
+</html>
